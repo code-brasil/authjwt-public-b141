@@ -15,8 +15,11 @@ async function fetchUsers() {
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/functions/authjwt/get_users', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({})
     });
     const data = await response.json();
     if (data.users) {
@@ -69,14 +72,17 @@ async function handleUserForm(e) {
     const id = e.target.userId.value;
     const token = localStorage.getItem('token');
     let endpoint = 'add_user';
-    let body = { username, password, is_admin, token };
+    let body = { username, password, is_admin };
     if (isEditing) {
         endpoint = 'edit_user';
         body.id = id;
     }
     const response = await fetch(`http://localhost:8000/functions/authjwt/${endpoint}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(body)
     });
     const data = await response.json();
@@ -93,8 +99,11 @@ async function deleteUser(id) {
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/functions/authjwt/delete_user', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, token })
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ id })
     });
     const data = await response.json();
     if (data.success) {
@@ -108,8 +117,11 @@ async function editUser(id) {
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/functions/authjwt/get_users', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({})
     });
     const data = await response.json();
     if (data.users) {
